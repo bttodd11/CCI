@@ -1,17 +1,25 @@
+const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require("constants");
 // There is going to be 3 possible edits
 // Replace, insert, remove
 // Replace length -1  should be identical 
 // Insert length + 1 should be identical but it shold hvae 
 // Remove 3 should be identical
 
+
+
 let hash = {}
 
 const oneAway = (firstWord, secondWord) => {
+    let startWord;
+    let finderWord;
     if (Math.abs(firstWord.length - secondWord.length) > 1) {
-        console.log("These words are not one edit away")
+        return false;
+    }
+    if (firstWord == secondWord) {
+        return true;
     }
 
-    if (firstWord.length == secondWord.length) { 
+    if (firstWord.length == secondWord.length) {
         // If this is true we can assume that this will either be a
         // replace or a failed replace
 
@@ -35,39 +43,21 @@ const oneAway = (firstWord, secondWord) => {
         }
 
         if (Object.keys(hash).length <= 2) {
-            console.log("This is a replace edit")
+            return true;
         }
 
     }
 
-    if (Math.abs(firstWord.length - secondWord.length) == 1) {
-        // If this is true it is either a remove or insert
+    // This is either a removal or addition if the length differs
+    // by 1 
+    if(Math.abs(firstWord.length - secondWord.length) == 1){
+        let newMa = new Map();
 
-        if(firstWord.length > secondWord.length){
-            // If the firstwords length is greater than the second words length then we are 
-            // testing for removal/
-            let storedArr = []
-            for(var index = 0; index < firstWord.length; index++){
-                // Making our hashtable 
-                let value = firstWord.charAt(index);
-                 storedArr.push(value)
-
- 
-            }
-            for( var secondIndex = 0; secondIndex < secondWord.length; secondIndex++){
-                let secondValue = secondWord.charAt(secondIndex);
-
-                let removeInd = storedArr.indexOf(secondValue);
-                storedArr.splice(removeInd, 1);
-            }
-          
-            if(storedArr.length == 1){
-              console.log("These values are a removal")
-            }
-        }
+    
+    if(newMa.size == 1){
+        return true
     }
-
 }
 
-
-oneAway("Pales", "Pale")
+}
+console.log(oneAway('Pales', 'Paes'))
